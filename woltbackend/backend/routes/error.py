@@ -8,7 +8,15 @@ def generic_exception(err):
     return jsonify({"message": "Cannot be found"}), 404
  #   return err, 500
 
+@error_bp.app_errorhandler(ValueError)
+def generic_exception(err):
+    return jsonify({"message": "An attribute value is not correct in request data"}), 500
+
+@error_bp.app_errorhandler(KeyError)
+def generic_exception(err):
+    return jsonify({"message": "A keyerror has occured in request data"}), 500
+
 @error_bp.app_errorhandler(Exception)
 def generic_exception(err):
-    return jsonify({"message": "Unkown error"}), 500
+    return jsonify({"message": "An error has occured"}), 500
  #   return err, 500

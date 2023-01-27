@@ -3,6 +3,42 @@ from datetime import datetime
 
 api_bp = Blueprint("api", __name__, url_prefix="/api")
 
+class DataCheck:
+    def __init__(self, obj: dict):
+        self.obj = obj
+
+    def check_data(self):
+        try:
+            cart_value = self.obj['cart_value']
+            if type(cart_value) != int or cart_value < 0:
+                raise ValueError
+        except KeyError:
+            pass
+        try:
+            delivery_distance = self.obj['delivery_distance']
+            if type(delivery_distance) != int or delivery_distance < 0:
+                raise ValueError
+        except KeyError:
+            pass
+        try:
+            number_of_items = self.obj['number_of_items']
+            if type(number_of_items) != int or number_of_items < 1:
+                raise ValueError
+        except KeyError:
+            pass
+        try:
+            time = self.obj['time']
+            if type(time) != str:
+                raise ValueError
+            try:
+                ISOtime = datetime.strptime(time, "%Y-%m-%dT%H:%M:%SZ")
+            except ValueError:
+                pass
+        except KeyError:
+            pass
+
+        return self
+
 def calc_value(value: int):
     if value < 1000:
         return 1000 - value
@@ -45,14 +81,21 @@ def check_time(time: str):
 
 @api_bp.route('/delivery-price', methods=['POST'])
 def delivery_price():
+    if request.is_json:
+        print("Data in JSON format")
+    else:
+        return jsonify({"message": "Data not in JSON format"}), 400
     content = request.json
+
+    dataobject = DataCheck(content)
+    checked_data = dataobject.check_data()
 
     cart_value = content['cart_value']
     delivery_distance = content['delivery_distance']
     number_of_items = content['number_of_items']
     timeISO = content['time']
 
-    if cart_value >= 10000:
+    if content['cart_value'] >= 10000:
         return jsonify({'delivery fee': 0})
 
     cart = calc_value(cart_value)
@@ -68,7 +111,7 @@ def delivery_price():
     else:
         d_fee = rounded
 
-#    print(type(time), type(number_of_items), type(delivery_distance), type(cart_value))
+  #  print(type(time), type(number_of_items), type(delivery_distance), type(cart_value))
  #   return jsonify({'cart value': cart, 'items fee': items, 'distance fee': distance, 'time fee': time, 'rounded': rounded, 'FINAL': d_fee}), 201
 #   return Response(status=204)
-    return jsonify({'delivery_fee': d_fee})
+    return jsonify({'delivery_fee': d_fee}), 200
