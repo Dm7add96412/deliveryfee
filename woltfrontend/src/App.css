@@ -1,0 +1,29 @@
+
+.App {
+
+  background: url(./assets/wolt_background.jpeg);
+  min-height: 100vh;
+  display: flex;
+  padding: 1rem;
+  font-size: 1.5rem;
+  flex-direction: column;
+  text-align:justify;
+  color: black;
+}
+
+.App-top {
+  padding: 1rem;
+
+}
+
+.App-content {
+  padding: 1rem;
+}
+
+.App-bottom {
+  padding: 1rem;
+}
+
+.Inputs {
+
+}
