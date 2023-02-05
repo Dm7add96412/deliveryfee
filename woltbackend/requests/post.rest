@@ -2,5 +2,5 @@ POST http://127.0.0.1:5000/api/delivery-price
 Content-Type: application/json
 
 {
-    "cart_value": 8000, "delivery_distance": 4750, "number_of_items": 10, "time": "2021-10-12T13:00:00Z"
+    "cart_value": 80000, "delivery_distance": 4750, "number_of_items": 10, "time": "2021-10-12T13:00:00Z"
 }
