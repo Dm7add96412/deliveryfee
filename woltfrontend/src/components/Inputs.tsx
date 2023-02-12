@@ -35,7 +35,7 @@ const Inputs: React.FC<IProps> = ({setValues}) => {
         (parseInt(input.distance)) <= 0 ||
         (parseInt(input.items)) < 1
         ) {
-        return alert('Please insert values that make sense :) (cart value decimals with (.)-character)')
+            return alert('Please insert values that make sense :) (cart value decimals with (.)-character)')
         }
         if (!(parseFloat(input.cart)) ||
             !(parseInt(input.distance)) ||
